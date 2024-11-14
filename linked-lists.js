@@ -80,12 +80,12 @@ export function linkedList () {
         }
     }
 
-    const nodeToString = (node) => {
-        if (node.next() === null) {
-            return `( ${node.value()} ) -> null`
-        }
-        return `( ${node.value()} ) -> ${nodeToString(node.next())}`
-    }
+    // const nodeToString = (node) => {
+    //     if (node.next() === null) {
+    //         return `( ${node.value()} ) -> null`
+    //     }
+    //     return `( ${node.value()} ) -> ${nodeToString(node.next())}`
+    // }
 
     const insertAt = (value, index) => {
         if (index < 0 || index >= _size) throw Error("Index Out Of Bounds")
@@ -122,7 +122,53 @@ export function linkedList () {
     const head = () => _head
     const tail = () => _tail
 
-    return {toString, append, prepend, size, head, tail, at, pop, contains, find, insertAt, removeAt}
+    // New functions created for this project
+
+    const clear = () => {
+        _head = null
+        _tail = null
+        _size = 0
+    }
+
+    const containsKeyAt = (key) => {
+        for (let i = 0; i < _size; i++) {
+            if (at(i).value().key === key) {
+                return {contains: true, at: i}
+            }
+        }
+        return {contains: false, at: -1}
+    }
+
+    const containsKey = (key) => {
+        return containsKeyAt(key).contains
+    }
+
+    const findKey = (key) => {
+        return containsKeyAt(key).at
+    }
+
+    const nodeToString = (node) => {
+        const keyValue = node.value()
+        if (node.next() === null) {
+            return `( (${keyValue.key}, ${keyValue.value}) ) -> null`
+        }
+        return `( (${keyValue.key}, ${keyValue.value}) ) -> ${nodeToString(node.next())}`
+    }
+
+    const replace = (key, value) => {
+        if (!containsKey(key)) {
+            append({key, value})
+            return
+        }
+
+        const index = findKey(key)
+        console.log(`idx: ${index} key: ${key} val: ${value}`)
+        insertAt({key, value}, index)
+        removeAt(index + 1)
+
+    }
+
+    return {toString, append, size, removeAt, clear, containsKey, replace}
 }
 
 function node (val = null, nextNode = null) {

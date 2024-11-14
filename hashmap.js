@@ -1,17 +1,23 @@
 import { linkedList } from "./linked-lists.js"
 
-// TODO: Big Todo --> Guardar directamente todo como linkedlist
-
 class HashMap {
     constructor(loadFactor = 0.8, capacity = 16) {
         this.loadFactor = loadFactor;
         this.capacity = capacity;
         
-        this.buckets = []
         this.totalItems = 0
+        this.buckets = []
+        this.initializeBucckets()
     }
 
     // Helpers
+
+    initializeBucckets() {
+        for (let i = 0; i < this.capacity; i++) {
+            const list = linkedList()
+            this.buckets.push(list)
+        }
+    }
 
     add(key, value, index) {
         if (index < 0 || index >= this.capacity) {
@@ -21,7 +27,7 @@ class HashMap {
         this.totalItems++
         this.doubleCapacity()
 
-        this.buckets[index] = {key, value}
+        this.buckets[index].append({key, value})
     }
 
     delete(index) {
@@ -30,7 +36,7 @@ class HashMap {
         }
 
         this.totalItems--
-        this.buckets[index] = undefined
+        this.buckets[index].clear()
     }
 
     doubleCapacity() {
@@ -57,23 +63,17 @@ class HashMap {
 
     set(key, value) {
         const hashCode = this.hash(key)
+        console.log(`key: ${key} hashcode: ${hashCode}`)
 
         if (!this.has(key)) {
             this.add(key, value, hashCode)
             return
         } 
         
-        const keyValue = this.buckets[hashCode] // TODO: comprobar que esto no da error
-        if (keyValue.key === key) {
-            keyValue.value = value
-            return
-        }
-
-        console.log(`!!! CONFLICT !!! ${key} - ${keyValue[0]}`)
-        const list = linkedList()
-        list.append(keyValue)
-        list.append({key, value})
-        this.buckets[hashCode] = list
+        console.log(`!!! CONFLICT !!!`)
+        const existingList = this.buckets[hashCode]
+        existingList.replace(key, value) 
+        
     }
 
     get(key) {
@@ -84,10 +84,9 @@ class HashMap {
 
     has(key) {
         const hashCode = this.hash(key)
-        const keyValue = this.buckets[hashCode]
+        const list = this.buckets[hashCode]
 
-        // TODO: Esto no es cierto, ¿qué pasa si hay linkedList?
-        return keyValue !== undefined
+        return list.containsKey(key)
     }
 
     remove(key) {
@@ -105,15 +104,16 @@ class HashMap {
     }
 
     clear() {
-        for (const key of this.keys) {
-            this.remove(key)
+        for (const list of this.buckets) {
+            list.clear()
         }
     }
 
     get keys() {
         const keys = []
-        for (const keyValue of this.entries) {
-            keys.push(keyValue.key)
+        for (const list of this.entries) {
+            // TODO: Get all keys of list
+            // keys.push(list.key)
         }
 
         return keys
@@ -121,8 +121,9 @@ class HashMap {
 
     get values() {
         const values = []
-        for (const keyValue of this.entries) {
-            values.push(keyValue.value)
+        for (const list of this.entries) {
+            // TODO: Get all values of list
+            // values.push(list.value)
         }
 
         return values
@@ -130,9 +131,10 @@ class HashMap {
 
     get entries() {
         const entries = []
-        for (const keyValue of this.buckets) {
-            if (keyValue !== undefined) {
-                entries.push(keyValue)
+        for (const list of this.buckets) {
+            if (list.size() !== 0) {
+                entries.push(list)
+                list.toString()
             }
         }
 
@@ -148,4 +150,6 @@ test.set('carrot', 'orange')
 test.set('dog', 'brown')
 test.set('elephant', 'gray')
 test.set('frog', 'green')
-console.log(test.entries[0].head().value)
+test.set('elephant', 'blue')
+
+test.entries
