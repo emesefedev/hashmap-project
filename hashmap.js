@@ -5,15 +5,14 @@ class HashMap {
         this.loadFactor = loadFactor;
         this.capacity = capacity;
         
-        this.totalItems = 0
         this.buckets = []
-        this.initializeBucckets()
+        this.initializeBucckets(capacity)
     }
 
     // Helpers
 
-    initializeBucckets() {
-        for (let i = 0; i < this.capacity; i++) {
+    initializeBucckets(newBuckets) {
+        for (let i = 0; i < newBuckets; i++) {
             const list = linkedList()
             this.buckets.push(list)
         }
@@ -24,28 +23,47 @@ class HashMap {
             throw new Error("Trying to access index out of bounds");
         }
 
-        this.totalItems++
-        this.doubleCapacity()
+        const list = this.getList(index)
+        list.append({key, value})
 
-        this.buckets[index].append({key, value})
+        this.doubleCapacity()    
     }
 
-    delete(index) {
+    getList(index) {
         if (index < 0 || index >= this.capacity) {
             throw new Error("Trying to access index out of bounds");
         }
 
-        this.totalItems--
-        this.buckets[index].clear()
+        return this.buckets[index]
+    }
+
+    getListFromKey(key) {
+        const hashCode = this.hash(key)
+        return this.getList(hashCode)
     }
 
     doubleCapacity() {
-        if (this.totalItems >= this.capacity * this.loadFactor) {
-            this.capacity *= 2
+        if (this.length >= this.capacity * this.loadFactor) {
             console.log("It's time to double the capacity")
 
-            // TODO: reasign elements
+            this.initializeBucckets(this.capacity)
+            this.capacity *= 2
+
+            this.reasingElements()
         }
+    }
+
+    reasingElements() {
+        const entries = this.entries
+        this.clear()
+        entries.forEach(([key, value]) => {
+            this.reasignElement(key, value)
+        })
+    }
+
+    reasignElement(key, value) {
+        const newHash = this.hash(key)
+        this.set(key, value)
     }
 
     // Functions
@@ -62,43 +80,38 @@ class HashMap {
     }
 
     set(key, value) {
-        const hashCode = this.hash(key)
-        console.log(`key: ${key} hashcode: ${hashCode}`)
-
         if (!this.has(key)) {
-            this.add(key, value, hashCode)
+            this.add(key, value, this.hash(key))
             return
         } 
         
-        const existingList = this.buckets[hashCode]
-        existingList.replace(key, value) 
+        const list = this.getListFromKey(key)
+        list.replace(key, value)  
     }
 
     get(key) {
-        const hashCode = this.hash(key)
+        if (!this.has(key)) {
+            return null
+        } 
 
-        return this.has(key) ? this.buckets[hashCode].value : null
+        const list = this.getListFromKey(key)
+        return list.getValue(key)
     }
 
     has(key) {
-        const hashCode = this.hash(key)
-        const list = this.buckets[hashCode]
-
+        const list = this.getListFromKey(key)
         return list.containsKey(key)
     }
 
     remove(key) {
-        if (this.has(key)) {
-            // TODO: Esto no es tan simple, ¿qué pasa si hay linkedList?
-            this.delete(this.hash(key))
-            return true
+        if (!this.has(key)) {
+            return false
         }
 
-        return false
-    }
+        const list = this.getListFromKey(key)        
+        list.removeKey(key)
 
-    get length() {
-        return this.totalItems
+        return true
     }
 
     clear() {
@@ -107,11 +120,14 @@ class HashMap {
         }
     }
 
+    get length() {
+        return this.entries.length
+    }
+
     get keys() {
         const keys = []
-        for (const list of this.entries) {
-            // TODO: Get all keys of list
-            // keys.push(list.key)
+        for (const keyValue of this.entries) {
+            keys.push(keyValue[0])
         }
 
         return keys
@@ -119,9 +135,8 @@ class HashMap {
 
     get values() {
         const values = []
-        for (const list of this.entries) {
-            // TODO: Get all values of list
-            // values.push(list.value)
+        for (const keyValue of this.entries) {
+            values.push(keyValue[1])
         }
 
         return values
@@ -131,23 +146,35 @@ class HashMap {
         const entries = []
         for (const list of this.buckets) {
             if (list.size() !== 0) {
-                entries.push(list)
-                list.toString()
+                list.toArray().forEach((keyValue) => {
+                    entries.push(keyValue)  
+                })
             }
         }
 
         return entries
     }
-
 }
 
 const test = new HashMap(0.8, 16)
 test.set('apple', 'red')
+test.set('snake', 'black')
 test.set('banana', 'yellow')
-test.set('carrot', 'orange')
-test.set('dog', 'brown')
 test.set('elephant', 'gray')
-test.set('frog', 'green')
+test.set('peach', 'black')
+test.set('snail', 'black')
+test.set('squirrel', 'black')
 test.set('elephant', 'blue')
+test.set('dog', 'blue')
+test.set('wind', 'blue')
+test.set('pear', 'blue')
+test.set('pen', 'blue')
+test.set('cat', 'blue')
+test.set('hamster', 'blue')
 
-test.entries
+
+console.log(test.entries)
+
+test.remove('elephant')
+test.remove('frog')
+

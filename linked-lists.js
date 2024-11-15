@@ -162,13 +162,32 @@ export function linkedList () {
         }
 
         const index = findKey(key)
-        console.log(`idx: ${index} key: ${key} val: ${value}`)
         insertAt({key, value}, index)
         removeAt(index + 1)
-
     }
 
-    return {toString, append, size, removeAt, clear, containsKey, replace}
+    const removeKey = (key) => {
+        const index = findKey(key)
+        removeAt(index)
+    }
+
+    const getValue = (key) => {
+        const index = findKey(key)
+        const node = at(index)
+        return node.data().value
+    }
+
+    const toArray = (node = _head) => {
+        const data = node.data()
+
+        if (node.next() === null) {
+            return [[data.key, data.value]]
+        }
+ 
+        return [[data.key, data.value], ...toArray(node.next())]
+    }
+
+    return {toString, append, size, clear, containsKey, replace, removeKey, getValue, toArray}
 }
 
 function node (dataValue = null, nextNode = null) {
