@@ -70,10 +70,8 @@ class HashMap {
             return
         } 
         
-        console.log(`!!! CONFLICT !!!`)
         const existingList = this.buckets[hashCode]
         existingList.replace(key, value) 
-        
     }
 
     get(key) {

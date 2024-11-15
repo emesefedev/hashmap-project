@@ -4,8 +4,8 @@ export function linkedList () {
     
     let _size = 0
 
-    const append = (value) => {
-        const newNode = node(value)
+    const append = (data) => {
+        const newNode = node(data)
         if (_size === 0) {
             _head = newNode
             _tail = newNode
@@ -20,9 +20,9 @@ export function linkedList () {
         _size++
     }
 
-    const prepend = (value) => {
+    const prepend = (data) => {
         const prevHead = _head
-        _head = node(value, prevHead)
+        _head = node(data, prevHead)
 
         _size++
     }
@@ -55,21 +55,21 @@ export function linkedList () {
         _size--
     }
 
-    const containsAt = (value) => {
+    const containsAt = (data) => {
         for (let i = 0; i < _size; i++) {
-            if (at(i).value() === value) {
+            if (at(i).data() === data) {
                 return {contains: true, at: i}
             }
         }
         return {contains: false, at: -1}
     }
 
-    const contains = (value) => {
-        return containsAt(value).contains
+    const contains = (data) => {
+        return containsAt(data).contains
     }
 
-    const find = (value) => {
-        return containsAt(value).at
+    const find = (data) => {
+        return containsAt(data).at
     }
 
     const toString = () => {
@@ -82,19 +82,19 @@ export function linkedList () {
 
     // const nodeToString = (node) => {
     //     if (node.next() === null) {
-    //         return `( ${node.value()} ) -> null`
+    //         return `( ${node.data()} ) -> null`
     //     }
-    //     return `( ${node.value()} ) -> ${nodeToString(node.next())}`
+    //     return `( ${node.data()} ) -> ${nodeToString(node.next())}`
     // }
 
-    const insertAt = (value, index) => {
+    const insertAt = (data, index) => {
         if (index < 0 || index >= _size) throw Error("Index Out Of Bounds")
 
         if (index === 0) {
-            prepend(value)
+            prepend(data)
         } else {
             const nodeAtIndex = at(index)
-            const newNode = node(value, nodeAtIndex)
+            const newNode = node(data, nodeAtIndex)
             at(index - 1).updateNextNode(newNode)
             
             _size++
@@ -132,7 +132,7 @@ export function linkedList () {
 
     const containsKeyAt = (key) => {
         for (let i = 0; i < _size; i++) {
-            if (at(i).value().key === key) {
+            if (at(i).data().key === key) {
                 return {contains: true, at: i}
             }
         }
@@ -148,11 +148,11 @@ export function linkedList () {
     }
 
     const nodeToString = (node) => {
-        const keyValue = node.value()
+        const data = node.data()
         if (node.next() === null) {
-            return `( (${keyValue.key}, ${keyValue.value}) ) -> null`
+            return `( (${data.key}, ${data.value}) ) -> null`
         }
-        return `( (${keyValue.key}, ${keyValue.value}) ) -> ${nodeToString(node.next())}`
+        return `( (${data.key}, ${data.value}) ) -> ${nodeToString(node.next())}`
     }
 
     const replace = (key, value) => {
