@@ -171,21 +171,21 @@ export function linkedList () {
     return {toString, append, size, removeAt, clear, containsKey, replace}
 }
 
-function node (val = null, nextNode = null) {
+function node (dataValue = null, nextNode = null) {
 
-    let _value = val
+    let _data = dataValue
     let _nextNode = nextNode
 
-    const updateValue = (newValue) => {
-        _value = newValue
+    const updateData = (newDataValue) => {
+        _data = newDataValue
     }
 
     const updateNextNode = (newNext) => {
         _nextNode = newNext
     }
 
-    const value = () => _value
+    const data = () => _data
     const next = () => _nextNode
 
-    return {value, next, updateValue, updateNextNode}  
+    return {data, next, updateData, updateNextNode}  
 }
