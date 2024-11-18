@@ -1,4 +1,4 @@
-import { linkedList } from "./linked-lists.js"
+import { linkedList } from './linked-lists.js'
 
 class HashMap {
 
@@ -20,7 +20,7 @@ class HashMap {
 
     add(key, value, index) {
         if (index < 0 || index >= this.capacity) {
-            throw new Error("Trying to access index out of bounds");
+            throw new Error('Trying to access index out of bounds');
         }
 
         const list = this.getList(index)
@@ -32,7 +32,7 @@ class HashMap {
 
     getList(index) {
         if (index < 0 || index >= this.capacity) {
-            throw new Error("Trying to access index out of bounds");
+            throw new Error('Trying to access index out of bounds');
         }
 
         return this.buckets[index]
@@ -45,7 +45,7 @@ class HashMap {
 
     doubleCapacity() {
     
-        console.log("It's time to double the capacity")
+        console.log('It\'s time to double the capacity')
 
         this.initializeBucckets(this.capacity)
         this.capacity *= 2
@@ -143,22 +143,23 @@ class HashMap {
     get entries() {
         const entries = []
         for (const list of this.buckets) {
-            if (list.size() !== 0) {
-                list.toArray((data) => [data.key, data.value]).forEach((keyValue) => {
-                    entries.push(keyValue)  
-                })
-            }
+            list.toArray((data) => [data.key, data.value]).forEach((keyValue) => {
+                entries.push(keyValue)  
+            })
         }
 
         return entries
     }
 
     toString() {
+        let str = ''
         for (const list of this.buckets) {
-            if (list.size() !== 0) {
-                console.log(list.toString((data) => `(${data.key}, ${data.value})`))
+            let tmp = list.toString((data) => `(${data.key}, ${data.value})`)
+            if(tmp.length) {
+                str += tmp + '\n'
             }
         }
+        console.log(str);
     }
 }
 
@@ -179,4 +180,8 @@ test.set('lion', 'golden')
 test.set('moon', 'silver')
 
 test.toString()
+
+console.log(
+    test.entries
+)
 

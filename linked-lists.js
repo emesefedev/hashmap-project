@@ -29,7 +29,7 @@ export function linkedList () {
 
     const at = (index) => {
         
-        if (index < 0 || index >= _size) throw Error("Index Out Of Bounds")
+        if (index < 0 || index >= _size) throw Error('Index Out Of Bounds')
 
         let i = 0
         let node = _head
@@ -80,7 +80,7 @@ export function linkedList () {
 
     const toString = (callback, node = _head) => {
         if (size <= 0) {
-            return  "null"
+            return  ''
         }
 
         const data = node.data()
@@ -91,25 +91,16 @@ export function linkedList () {
     }
 
     const toArray = (callback, node = _head) => {
-        const data = node.data()
-
-        if (node.next() === null) {
-            return [callback(data)]
+        if(!node) {
+            return []
         }
- 
+
+        const data = node.data()
         return [callback(data), ...toArray(callback, node.next())]
     }
 
-    const nodeToString = (node, callback) => {
-        const data = node.data()
-        if (node.next() === null) {
-            return `( ${callback(data)} ) -> null`
-        }
-        return `( ${callback(data)} ) -> ${nodeToString(node.next(), callback)}`
-    }
-
     const insertAt = (data, index) => {
-        if (index < 0 || index >= _size) throw Error("Index Out Of Bounds")
+        if (index < 0 || index >= _size) throw Error('Index Out Of Bounds')
 
         if (index === 0) {
             prepend(data)
@@ -123,7 +114,7 @@ export function linkedList () {
     }
 
     const removeAt = (index) => {
-        if (index < 0 || index >= _size) throw Error("Index Out Of Bounds")
+        if (index < 0 || index >= _size) throw Error('Index Out Of Bounds')
         if (_size <= 0) return
 
         if (_size === 1) {
