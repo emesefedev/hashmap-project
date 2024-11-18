@@ -73,20 +73,21 @@ export function linkedList () {
         return containsAt(callback).at
     }
 
-    const toString = () => {
+    const toString = (callback) => {
         if (_size > 0) {
-            console.log(nodeToString(_head))
+            console.log(nodeToString(_head, callback))
         } else {
             console.log("null")
         }
     }
 
-    // const nodeToString = (node) => {
-    //     if (node.next() === null) {
-    //         return `( ${node.data()} ) -> null`
-    //     }
-    //     return `( ${node.data()} ) -> ${nodeToString(node.next())}`
-    // }
+    const nodeToString = (node, callback) => {
+        const data = node.data()
+        if (node.next() === null) {
+            return `( ${callback(data)} ) -> null`
+        }
+        return `( ${callback(data)} ) -> ${nodeToString(node.next())}`
+    }
 
     const insertAt = (data, index) => {
         if (index < 0 || index >= _size) throw Error("Index Out Of Bounds")
@@ -103,20 +104,21 @@ export function linkedList () {
     }
 
     const removeAt = (index) => {
-        if (_size <= 0) return
         if (index < 0 || index >= _size) throw Error("Index Out Of Bounds")
-        
-        if (_size > 1) {
-            if (index === 0) {
-                _head = _head.next()
-            } else {
-                const nodeToRemove = at(index)
-                at(index - 1).updateNextNode(nodeToRemove.next())
-            }
-            _size--
-        } else {
+        if (_size <= 0) return
+
+        if (_size === 1) {
             pop()
-        }        
+            return
+        }
+        
+        if (index === 0) {
+            _head = _head.next()
+        } else {
+            const nodeToRemove = at(index)
+            at(index - 1).updateNextNode(nodeToRemove.next())
+        }
+        _size--   
     }
 
     const size = () => _size
@@ -146,14 +148,6 @@ export function linkedList () {
 
     const findKey = (key) => {
         return containsKeyAt(key).at
-    }
-
-    const nodeToString = (node) => {
-        const data = node.data()
-        if (node.next() === null) {
-            return `( (${data.key}, ${data.value}) ) -> null`
-        }
-        return `( (${data.key}, ${data.value}) ) -> ${nodeToString(node.next())}`
     }
 
     const replace = (key, value) => {

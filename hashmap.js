@@ -161,6 +161,8 @@ class HashMap {
 
         return entries
     }
+
+    // TODO: fucntion toString
 }
 
 const test = new HashMap(0.8, 16)
