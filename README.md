@@ -8,4 +8,4 @@
 
 ````
 
-🎯[Assignment](https://github.com/emesefedev/hashmap-project)
+🎯[Assignment](https://www.theodinproject.com/lessons/javascript-hashmap)
