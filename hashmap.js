@@ -154,7 +154,7 @@ class HashMap {
         const entries = []
         for (const list of this.buckets) {
             if (list.size() !== 0) {
-                list.toArray().forEach((keyValue) => {
+                list.toArray((data) => [data.key, data.value]).forEach((keyValue) => {
                     entries.push(keyValue)  
                 })
             }
@@ -173,7 +173,6 @@ test.set('banana', 'yellow')
 test.set('carrot', 'orange')
 test.set('dog', 'brown')
 test.set('elephant', 'gray')
-test.remove('banana')
 
 console.log(test.get('elephant'))
 
@@ -187,5 +186,5 @@ console.log(test.get('elephant'))
 // test.set('lion', 'golden')
 // test.set('moon', 'silver')
 
-//test.entries
+console.log(test.entries)
 

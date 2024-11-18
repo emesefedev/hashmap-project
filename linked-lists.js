@@ -200,14 +200,14 @@ export function linkedList () {
 
     
 
-    const toArray = (node = _head) => {
+    const toArray = (callback, node = _head) => {
         const data = node.data()
 
         if (node.next() === null) {
-            return [[data.key, data.value]]
+            return [callback(data)]
         }
  
-        return [[data.key, data.value], ...toArray(node.next())]
+        return [callback(data), ...toArray(callback, node.next())]
     }
 
     return {toString, append, size, clear, replace, remove, get, toArray,
