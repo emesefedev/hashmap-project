@@ -11,8 +11,6 @@ class HashMap {
         this.initializeBucckets(capacity)
     }
 
-    // Helpers
-
     initializeBucckets(newBuckets) {
         for (let i = 0; i < newBuckets; i++) {
             const list = linkedList()
@@ -27,15 +25,9 @@ class HashMap {
 
         const list = this.getList(index)
         list.append({key, value})
-        
-        console.log(list.toString((data) => `(${data.key}, ${data.value})`))
 
-        // TODO: I like it
-        // const needsMoreSpace = ????
-        // if(needsMoreSpace ){
-        //     this.doubleCapacity()
-        // }
-        this.doubleCapacity()    
+        const needsMoreSpace = this.length >= (this.capacity * this.loadFactor)
+        if (needsMoreSpace) this.doubleCapacity()    
     }
 
     getList(index) {
@@ -52,14 +44,14 @@ class HashMap {
     }
 
     doubleCapacity() {
-        if (this.length >= (this.capacity * this.loadFactor)) {
-            console.log("It's time to double the capacity")
+    
+        console.log("It's time to double the capacity")
 
-            this.initializeBucckets(this.capacity)
-            this.capacity *= 2
+        this.initializeBucckets(this.capacity)
+        this.capacity *= 2
 
-            this.reasingElements()
-        }
+        this.reasingElements()
+    
     }
 
     reasingElements() {
@@ -73,8 +65,6 @@ class HashMap {
     reasignElement(key, value) {
         this.set(key, value)
     }
-
-    // Functions
     
     hash(key) {
         let hashCode = 0;
@@ -163,7 +153,13 @@ class HashMap {
         return entries
     }
 
-    // TODO: fucntion toString
+    toString() {
+        for (const list of this.buckets) {
+            if (list.size() !== 0) {
+                console.log(list.toString((data) => `(${data.key}, ${data.value})`))
+            }
+        }
+    }
 }
 
 const test = new HashMap(0.8, 16)
@@ -173,19 +169,14 @@ test.set('banana', 'yellow')
 test.set('carrot', 'orange')
 test.set('dog', 'brown')
 test.set('elephant', 'gray')
-test.set('elephant', 'pink')
+test.set('frog', 'green')
+test.set('grape', 'purple')
+test.set('hat', 'black')
+test.set('ice cream', 'white')
+test.set('jacket', 'blue')
+test.set('kite', 'pink')
+test.set('lion', 'golden')
+test.set('moon', 'silver')
 
-console.log(test.get('elephant'))
-
-
-// test.set('frog', 'green')
-// test.set('grape', 'purple')
-// test.set('hat', 'black')
-// test.set('ice cream', 'white')
-// test.set('jacket', 'blue')
-// test.set('kite', 'pink')
-// test.set('lion', 'golden')
-// test.set('moon', 'silver')
-
-console.log(test.entries)
+test.toString()
 
