@@ -90,6 +90,16 @@ export function linkedList () {
         return `( ${callback(data)} ) -> ${toString(callback, node.next())}`
     }
 
+    const toArray = (callback, node = _head) => {
+        const data = node.data()
+
+        if (node.next() === null) {
+            return [callback(data)]
+        }
+ 
+        return [callback(data), ...toArray(callback, node.next())]
+    }
+
     const nodeToString = (node, callback) => {
         const data = node.data()
         if (node.next() === null) {
@@ -135,84 +145,35 @@ export function linkedList () {
         removeAt(index)
     }
 
-    const size = () => _size
-    const head = () => _head
-    const tail = () => _tail
-
-    // New functions created for this project
-
     const clear = () => {
         _head = null
         _tail = null
         _size = 0
     }
 
-    const containsKeyAt = (key) => {
-        for (let i = 0; i < _size; i++) {
-            if (at(i).data().key === key) {
-                return {contains: true, at: i}
-            }
-        }
-        return {contains: false, at: -1}
-    }
+    const size = () => _size
+    const head = () => _head
+    const tail = () => _tail
+
 
     const containsKey = (key) => {
         return containsKeyAt(key).contains
     }
 
-    const findKey = (key) => {
-        return containsKeyAt(key).at
-    }
 
-    const replace = (key, value) => {
-        if (!containsKey(key)) {
-            append({key, value})
+
+    const replace = (newData, callback) => {
+        if (!contains(callback)) {
+            append(newData)
             return
         }
 
-        const index = findKey(key)
-        insertAt({key, value}, index)
+        const index = find(callback)
+        insertAt(newData, index)
         removeAt(index + 1)
     }
 
-    // TODO: Fer llista genèrica
-    // const replaceMiquel = (selector, newValue, currentNode) => {
-    //     const currNode = currentNode ?? this._head
-    //     if(!currNode) 
-    //         return undefined
-    //     if(!selector(currentNode.data())) 
-    //         return this.replaceMiquel(select, newValue, currNode.next())
-
-    //     currentNode.updateData(newValue)
-    //     return currentNode.data()
-    // }
-
-    // TODO: Fer llista genèrica
-    // const findMiquel = (selector) => {
-    //     for (const element of toArray()) {
-    //         if(selector(element)) {
-    //             return element
-    //         }
-    //     }
-    //     return null
-    // }
-    
-
-    
-
-    const toArray = (callback, node = _head) => {
-        const data = node.data()
-
-        if (node.next() === null) {
-            return [callback(data)]
-        }
- 
-        return [callback(data), ...toArray(callback, node.next())]
-    }
-
-    return {toString, append, size, clear, replace, remove, get, toArray,
-        contains
-    }
+    return {toString, append, size, clear, replace, remove, get, toArray, contains}
 }
 
 function node (dataValue = null, nextNode = null) {

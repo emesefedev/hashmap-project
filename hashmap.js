@@ -94,7 +94,7 @@ class HashMap {
         } 
         
         const list = this.getListFromKey(key)
-        list.replace(key, value)  
+        list.replace({key, value}, (data) => data.key === key)  
     }
 
     get(key) {
@@ -173,6 +173,7 @@ test.set('banana', 'yellow')
 test.set('carrot', 'orange')
 test.set('dog', 'brown')
 test.set('elephant', 'gray')
+test.set('elephant', 'pink')
 
 console.log(test.get('elephant'))
 
