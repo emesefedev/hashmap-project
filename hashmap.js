@@ -1,7 +1,6 @@
-import { linkedList } from "./linked-lists.js"
+import { linkedList } from './linked-lists.js'
 
 class HashMap {
-
 
     constructor(loadFactor = 0.8, capacity = 16) {
         this.loadFactor = loadFactor;
@@ -10,8 +9,6 @@ class HashMap {
         this.buckets = []
         this.initializeBucckets(capacity)
     }
-
-    // Helpers
 
     initializeBucckets(newBuckets) {
         for (let i = 0; i < newBuckets; i++) {
@@ -22,23 +19,19 @@ class HashMap {
 
     add(key, value, index) {
         if (index < 0 || index >= this.capacity) {
-            throw new Error("Trying to access index out of bounds");
+            throw new Error('Trying to access index out of bounds');
         }
 
         const list = this.getList(index)
         list.append({key, value})
 
-        // TODO: I like it
-        // const needsMoreSpace = ????
-        // if(needsMoreSpace ){
-        //     this.doubleCapacity()
-        // }
-        this.doubleCapacity()    
+        const needsMoreSpace = this.length >= (this.capacity * this.loadFactor)
+        if (needsMoreSpace) this.doubleCapacity()    
     }
 
     getList(index) {
         if (index < 0 || index >= this.capacity) {
-            throw new Error("Trying to access index out of bounds");
+            throw new Error('Trying to access index out of bounds');
         }
 
         return this.buckets[index]
@@ -50,14 +43,14 @@ class HashMap {
     }
 
     doubleCapacity() {
-        if (this.length >= (this.capacity * this.loadFactor)) {
-            console.log("It's time to double the capacity")
+    
+        console.log('It\'s time to double the capacity')
 
-            this.initializeBucckets(this.capacity)
-            this.capacity *= 2
+        this.initializeBucckets(this.capacity)
+        this.capacity *= 2
 
-            this.reasingElements()
-        }
+        this.reasingElements()
+    
     }
 
     reasingElements() {
@@ -71,8 +64,6 @@ class HashMap {
     reasignElement(key, value) {
         this.set(key, value)
     }
-
-    // Functions
     
     hash(key) {
         let hashCode = 0;
@@ -92,7 +83,7 @@ class HashMap {
         } 
         
         const list = this.getListFromKey(key)
-        list.replace(key, value)  
+        list.replace({key, value}, (data) => data.key === key)  
     }
 
     get(key) {
@@ -101,12 +92,12 @@ class HashMap {
         } 
 
         const list = this.getListFromKey(key)
-        return list.getValue(key)
+        return list.get((data) => data.key === key).value
     }
 
     has(key) {
         const list = this.getListFromKey(key)
-        return list.containsKey(key)
+        return list.contains((data) => data.key === key)
     }
 
     remove(key) {
@@ -115,7 +106,7 @@ class HashMap {
         }
 
         const list = this.getListFromKey(key)        
-        list.removeKey(key)
+        list.remove((data) => data.key === key)
 
         return true
     }
@@ -151,14 +142,23 @@ class HashMap {
     get entries() {
         const entries = []
         for (const list of this.buckets) {
-            if (list.size() !== 0) {
-                list.toArray().forEach((keyValue) => {
-                    entries.push(keyValue)  
-                })
-            }
+            list.toArray((data) => [data.key, data.value]).forEach((keyValue) => {
+                entries.push(keyValue)  
+            })
         }
 
         return entries
+    }
+
+    toString() {
+        let str = ''
+        for (const list of this.buckets) {
+            let tmp = list.toString((data) => `(${data.key}, ${data.value})`)
+            if(tmp.length) {
+                str += tmp + '\n'
+            }
+        }
+        console.log(str);
     }
 }
 
@@ -177,4 +177,10 @@ test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
 test.set('moon', 'silver')
+
+test.toString()
+
+console.log(
+    test.entries
+)
 

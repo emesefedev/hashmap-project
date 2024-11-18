@@ -29,7 +29,7 @@ export function linkedList () {
 
     const at = (index) => {
         
-        if (index < 0 || index >= _size) throw Error("Index Out Of Bounds")
+        if (index < 0 || index >= _size) throw Error('Index Out Of Bounds')
 
         let i = 0
         let node = _head
@@ -55,40 +55,63 @@ export function linkedList () {
         _size--
     }
 
-    const containsAt = (data) => {
+    const containsAt = (callback) => {
         for (let i = 0; i < _size; i++) {
-            if (at(i).data() === data) {
+            const currentData = at(i).data()
+            if (callback(currentData)) {
                 return {contains: true, at: i}
             }
         }
         return {contains: false, at: -1}
     }
 
-    const contains = (data) => {
-        return containsAt(data).contains
+    const contains = (callback) => {
+        return containsAt(callback).contains
     }
 
-    const find = (data) => {
-        return containsAt(data).at
+    const find = (callback) => {
+        return containsAt(callback).at
     }
 
-    const toString = () => {
-        if (_size > 0) {
-            console.log(nodeToString(_head))
-        } else {
-            console.log("null")
+    const get = (callback) => {
+        const index = find(callback)
+        return at(index).data()
+    }
+
+    const toString = (callback, node = _head) => {
+        if (size <= 0) {
+            return  ''
         }
+
+        const data = node.data()
+        if (node.next() === null) {
+            return `( ${callback(data)} ) -> null`
+        }
+        return `( ${callback(data)} ) -> ${toString(callback, node.next())}`
     }
 
-    // const nodeToString = (node) => {
-    //     if (node.next() === null) {
-    //         return `( ${node.data()} ) -> null`
-    //     }
-    //     return `( ${node.data()} ) -> ${nodeToString(node.next())}`
-    // }
+    const toArray = (callback, node = _head) => {
+        if(!node) {
+            return []
+        }
+
+        const data = node.data()
+        return [callback(data), ...toArray(callback, node.next())]
+    }
+
+    const replace = (newData, callback) => {
+        if (!contains(callback)) {
+            append(newData)
+            return
+        }
+
+        const index = find(callback)
+        insertAt(newData, index)
+        removeAt(index + 1)
+    }
 
     const insertAt = (data, index) => {
-        if (index < 0 || index >= _size) throw Error("Index Out Of Bounds")
+        if (index < 0 || index >= _size) throw Error('Index Out Of Bounds')
 
         if (index === 0) {
             prepend(data)
@@ -102,27 +125,27 @@ export function linkedList () {
     }
 
     const removeAt = (index) => {
+        if (index < 0 || index >= _size) throw Error('Index Out Of Bounds')
         if (_size <= 0) return
-        if (index < 0 || index >= _size) throw Error("Index Out Of Bounds")
-        
-        if (_size > 1) {
-            if (index === 0) {
-                _head = _head.next()
-            } else {
-                const nodeToRemove = at(index)
-                at(index - 1).updateNextNode(nodeToRemove.next())
-            }
-            _size--
-        } else {
+
+        if (_size === 1) {
             pop()
-        }        
+            return
+        }
+        
+        if (index === 0) {
+            _head = _head.next()
+        } else {
+            const nodeToRemove = at(index)
+            at(index - 1).updateNextNode(nodeToRemove.next())
+        }
+        _size--   
     }
 
-    const size = () => _size
-    const head = () => _head
-    const tail = () => _tail
-
-    // New functions created for this project
+    const remove = (callback) => {
+        const index = find(callback)
+        removeAt(index)
+    }
 
     const clear = () => {
         _head = null
@@ -130,87 +153,11 @@ export function linkedList () {
         _size = 0
     }
 
-    const containsKeyAt = (key) => {
-        for (let i = 0; i < _size; i++) {
-            if (at(i).data().key === key) {
-                return {contains: true, at: i}
-            }
-        }
-        return {contains: false, at: -1}
-    }
+    const size = () => _size
+    const head = () => _head
+    const tail = () => _tail
 
-    const containsKey = (key) => {
-        return containsKeyAt(key).contains
-    }
-
-    const findKey = (key) => {
-        return containsKeyAt(key).at
-    }
-
-    const nodeToString = (node) => {
-        const data = node.data()
-        if (node.next() === null) {
-            return `( (${data.key}, ${data.value}) ) -> null`
-        }
-        return `( (${data.key}, ${data.value}) ) -> ${nodeToString(node.next())}`
-    }
-
-    const replace = (key, value) => {
-        if (!containsKey(key)) {
-            append({key, value})
-            return
-        }
-
-        const index = findKey(key)
-        insertAt({key, value}, index)
-        removeAt(index + 1)
-    }
-
-    // TODO: Fer llista genèrica
-    // const replaceMiquel = (selector, newValue, currentNode) => {
-    //     const currNode = currentNode ?? this._head
-    //     if(!currNode) 
-    //         return undefined
-    //     if(!selector(currentNode.data())) 
-    //         return this.replaceMiquel(select, newValue, currNode.next())
-
-    //     currentNode.updateData(newValue)
-    //     return currentNode.data()
-    // }
-
-    // TODO: Fer llista genèrica
-    // const findMiquel = (selector) => {
-    //     for (const element of toArray()) {
-    //         if(selector(element)) {
-    //             return element
-    //         }
-    //     }
-    //     return null
-    // }
-    
-
-    const removeKey = (key) => {
-        const index = findKey(key)
-        removeAt(index)
-    }
-
-    const getValue = (key) => {
-        const index = findKey(key)
-        const node = at(index)
-        return node.data().value
-    }
-
-    const toArray = (node = _head) => {
-        const data = node.data()
-
-        if (node.next() === null) {
-            return [[data.key, data.value]]
-        }
- 
-        return [[data.key, data.value], ...toArray(node.next())]
-    }
-
-    return {toString, append, size, clear, containsKey, replace, removeKey, getValue, toArray}
+    return {toString, append, size, clear, replace, remove, get, toArray, contains}
 }
 
 function node (dataValue = null, nextNode = null) {
