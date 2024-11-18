@@ -99,6 +99,17 @@ export function linkedList () {
         return [callback(data), ...toArray(callback, node.next())]
     }
 
+    const replace = (newData, callback) => {
+        if (!contains(callback)) {
+            append(newData)
+            return
+        }
+
+        const index = find(callback)
+        insertAt(newData, index)
+        removeAt(index + 1)
+    }
+
     const insertAt = (data, index) => {
         if (index < 0 || index >= _size) throw Error('Index Out Of Bounds')
 
@@ -145,24 +156,6 @@ export function linkedList () {
     const size = () => _size
     const head = () => _head
     const tail = () => _tail
-
-
-    const containsKey = (key) => {
-        return containsKeyAt(key).contains
-    }
-
-
-
-    const replace = (newData, callback) => {
-        if (!contains(callback)) {
-            append(newData)
-            return
-        }
-
-        const index = find(callback)
-        insertAt(newData, index)
-        removeAt(index + 1)
-    }
 
     return {toString, append, size, clear, replace, remove, get, toArray, contains}
 }
