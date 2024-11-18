@@ -102,7 +102,7 @@ class HashMap {
         } 
 
         const list = this.getListFromKey(key)
-        return list.getValue(key)
+        return list.get(key)
     }
 
     has(key) {
@@ -170,10 +170,10 @@ const test = new HashMap(0.8, 16)
 test.set('apple', 'red')
 test.set('banana', 'yellow')
 test.set('carrot', 'orange')
-// test.set('dog', 'brown')
-// test.set('elephant', 'gray')
-// test.set('frog', 'green')
-// test.set('grape', 'purple')
+test.set('dog', 'brown')
+test.set('elephant', 'gray')
+test.set('frog', 'green')
+test.set('grape', 'purple')
 // test.set('hat', 'black')
 // test.set('ice cream', 'white')
 // test.set('jacket', 'blue')

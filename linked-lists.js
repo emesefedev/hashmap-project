@@ -86,7 +86,7 @@ export function linkedList () {
         if (node.next() === null) {
             return `( ${callback(data)} ) -> null`
         }
-        return `( ${callback(data)} ) -> ${nodeToString(node.next())}`
+        return `( ${callback(data)} ) -> ${nodeToString(node.next(), callback)}`
     }
 
     const insertAt = (data, index) => {
@@ -189,7 +189,10 @@ export function linkedList () {
         removeAt(index)
     }
 
-    const getValue = (key) => {
+    const get = (callback) => {
+
+
+
         const index = findKey(key)
         const node = at(index)
         return node.data().value
@@ -205,7 +208,7 @@ export function linkedList () {
         return [[data.key, data.value], ...toArray(node.next())]
     }
 
-    return {toString, append, size, clear, replace, removeKey, getValue, toArray,
+    return {toString, append, size, clear, replace, removeKey, get, toArray,
         contains
     }
 }
