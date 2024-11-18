@@ -211,7 +211,7 @@ export function linkedList () {
         return [[data.key, data.value], ...toArray(node.next())]
     }
 
-    return {toString, append, size, clear, containsKey, replace, removeKey, getValue, toArray,
+    return {toString, append, size, clear, replace, removeKey, getValue, toArray,
         contains
     }
 }
