@@ -157,24 +157,18 @@ class HashMap {
 }
 
 const test = new HashMap(0.8, 16)
+
 test.set('apple', 'red')
-test.set('snake', 'black')
 test.set('banana', 'yellow')
+test.set('carrot', 'orange')
+test.set('dog', 'brown')
 test.set('elephant', 'gray')
-test.set('peach', 'black')
-test.set('snail', 'black')
-test.set('squirrel', 'black')
-test.set('elephant', 'blue')
-test.set('dog', 'blue')
-test.set('wind', 'blue')
-test.set('pear', 'blue')
-test.set('pen', 'blue')
-test.set('cat', 'blue')
-test.set('hamster', 'blue')
-
-
-console.log(test.entries)
-
-test.remove('elephant')
-test.remove('frog')
+test.set('frog', 'green')
+test.set('grape', 'purple')
+test.set('hat', 'black')
+test.set('ice cream', 'white')
+test.set('jacket', 'blue')
+test.set('kite', 'pink')
+test.set('lion', 'golden')
+test.set('moon', 'silver')
 
