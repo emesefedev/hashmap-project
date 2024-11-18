@@ -106,7 +106,7 @@ class HashMap {
 
     has(key) {
         const list = this.getListFromKey(key)
-        return list.containsKey(key)
+        return list.contains((data) => data.key === key)
     }
 
     remove(key) {
@@ -165,6 +165,9 @@ class HashMap {
 const test = new HashMap(0.8, 16)
 
 test.set('apple', 'red')
+console.log(`has: ${test.has('apple')}`)
+
+
 test.set('banana', 'yellow')
 test.set('carrot', 'orange')
 test.set('dog', 'brown')

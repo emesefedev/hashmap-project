@@ -55,21 +55,22 @@ export function linkedList () {
         _size--
     }
 
-    const containsAt = (data) => {
+    const containsAt = (callback) => {
         for (let i = 0; i < _size; i++) {
-            if (at(i).data() === data) {
+            const currentData = at(i).data()
+            if (callback(currentData)) {
                 return {contains: true, at: i}
             }
         }
         return {contains: false, at: -1}
     }
 
-    const contains = (data) => {
-        return containsAt(data).contains
+    const contains = (callback) => {
+        return containsAt(callback).contains
     }
 
-    const find = (data) => {
-        return containsAt(data).at
+    const find = (callback) => {
+        return containsAt(callback).at
     }
 
     const toString = () => {
@@ -210,7 +211,9 @@ export function linkedList () {
         return [[data.key, data.value], ...toArray(node.next())]
     }
 
-    return {toString, append, size, clear, containsKey, replace, removeKey, getValue, toArray}
+    return {toString, append, size, clear, containsKey, replace, removeKey, getValue, toArray,
+        contains
+    }
 }
 
 function node (dataValue = null, nextNode = null) {
