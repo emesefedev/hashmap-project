@@ -117,7 +117,7 @@ class HashMap {
         }
 
         const list = this.getListFromKey(key)        
-        list.removeKey(key)
+        list.remove((data) => data.key === key)
 
         return true
     }
@@ -173,6 +173,7 @@ test.set('banana', 'yellow')
 test.set('carrot', 'orange')
 test.set('dog', 'brown')
 test.set('elephant', 'gray')
+test.remove('banana')
 
 console.log(test.get('elephant'))
 

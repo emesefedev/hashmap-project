@@ -73,6 +73,11 @@ export function linkedList () {
         return containsAt(callback).at
     }
 
+    const get = (callback) => {
+        const index = find(callback)
+        return at(index).data()
+    }
+
     const toString = (callback, node = _head) => {
         if (size <= 0) {
             return  "null"
@@ -123,6 +128,11 @@ export function linkedList () {
             at(index - 1).updateNextNode(nodeToRemove.next())
         }
         _size--   
+    }
+
+    const remove = (callback) => {
+        const index = find(callback)
+        removeAt(index)
     }
 
     const size = () => _size
@@ -188,15 +198,7 @@ export function linkedList () {
     // }
     
 
-    const removeKey = (key) => {
-        const index = findKey(key)
-        removeAt(index)
-    }
-
-    const get = (callback) => {
-        const index = find(callback)
-        return at(index).data()
-    }
+    
 
     const toArray = (node = _head) => {
         const data = node.data()
@@ -208,7 +210,7 @@ export function linkedList () {
         return [[data.key, data.value], ...toArray(node.next())]
     }
 
-    return {toString, append, size, clear, replace, removeKey, get, toArray,
+    return {toString, append, size, clear, replace, remove, get, toArray,
         contains
     }
 }
