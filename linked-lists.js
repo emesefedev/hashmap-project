@@ -73,12 +73,16 @@ export function linkedList () {
         return containsAt(callback).at
     }
 
-    const toString = (callback) => {
-        if (_size > 0) {
-            console.log(nodeToString(_head, callback))
-        } else {
-            console.log("null")
+    const toString = (callback, node = _head) => {
+        if (size <= 0) {
+            return  "null"
         }
+
+        const data = node.data()
+        if (node.next() === null) {
+            return `( ${callback(data)} ) -> null`
+        }
+        return `( ${callback(data)} ) -> ${toString(callback, node.next())}`
     }
 
     const nodeToString = (node, callback) => {
@@ -190,12 +194,8 @@ export function linkedList () {
     }
 
     const get = (callback) => {
-
-
-
-        const index = findKey(key)
-        const node = at(index)
-        return node.data().value
+        const index = find(callback)
+        return at(index).data()
     }
 
     const toArray = (node = _head) => {
