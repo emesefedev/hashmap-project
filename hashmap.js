@@ -1,6 +1,8 @@
 import { linkedList } from "./linked-lists.js"
 
 class HashMap {
+
+
     constructor(loadFactor = 0.8, capacity = 16) {
         this.loadFactor = loadFactor;
         this.capacity = capacity;
@@ -26,6 +28,11 @@ class HashMap {
         const list = this.getList(index)
         list.append({key, value})
 
+        // TODO: I like it
+        // const needsMoreSpace = ????
+        // if(needsMoreSpace ){
+        //     this.doubleCapacity()
+        // }
         this.doubleCapacity()    
     }
 
@@ -43,7 +50,7 @@ class HashMap {
     }
 
     doubleCapacity() {
-        if (this.length >= this.capacity * this.loadFactor) {
+        if (this.length >= (this.capacity * this.loadFactor)) {
             console.log("It's time to double the capacity")
 
             this.initializeBucckets(this.capacity)
@@ -62,7 +69,6 @@ class HashMap {
     }
 
     reasignElement(key, value) {
-        const newHash = this.hash(key)
         this.set(key, value)
     }
 

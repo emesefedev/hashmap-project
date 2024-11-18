@@ -166,6 +166,29 @@ export function linkedList () {
         removeAt(index + 1)
     }
 
+    // TODO: Fer llista genèrica
+    // const replaceMiquel = (selector, newValue, currentNode) => {
+    //     const currNode = currentNode ?? this._head
+    //     if(!currNode) 
+    //         return undefined
+    //     if(!selector(currentNode.data())) 
+    //         return this.replaceMiquel(select, newValue, currNode.next())
+
+    //     currentNode.updateData(newValue)
+    //     return currentNode.data()
+    // }
+
+    // TODO: Fer llista genèrica
+    // const findMiquel = (selector) => {
+    //     for (const element of toArray()) {
+    //         if(selector(element)) {
+    //             return element
+    //         }
+    //     }
+    //     return null
+    // }
+    
+
     const removeKey = (key) => {
         const index = findKey(key)
         removeAt(index)
